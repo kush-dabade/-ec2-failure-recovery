@@ -1,0 +1,12 @@
+This permanently deletes: vmfail-asg (and its instances), vmfail-alb, vmfail-tg, vmfail-lt,
+vmfail-alb-sg, vmfail-app-sg, IAM vmfail-dashboard-readonly-role/vmfail-dashboard-readonly-profile, and bucket vmfail-app-851226124537-ap-south-1.
+[15:38:27] Revoking rule sgr-0dfb4dae029968fea on sg-0ba7694fd29e7b774 (references sg-07eab8e4a658f761a)
+[15:38:29] Revoking rule sgr-0c3ad7c465e46db2e on sg-07eab8e4a658f761a (references sg-0ba7694fd29e7b774)
+[15:38:30] Deleting security group vmfail-app-sg (sg-0ba7694fd29e7b774)
+    "Return": true,
+    "GroupId": "sg-0ba7694fd29e7b774"
+[15:38:31] Deleting security group vmfail-alb-sg (sg-07eab8e4a658f761a)
+    "Return": true,
+    "GroupId": "sg-07eab8e4a658f761a"
+[15:38:36] Cleanup finished. Verify with: scripts/status.sh (should report the ASG missing)
+exit 0

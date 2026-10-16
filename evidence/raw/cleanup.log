@@ -1,0 +1,18 @@
+This permanently deletes: vmfail-asg (and its instances), vmfail-alb, vmfail-tg, vmfail-lt,
+vmfail-alb-sg, vmfail-app-sg, IAM vmfail-dashboard-readonly-role/vmfail-dashboard-readonly-profile, and bucket vmfail-app-851226124537-ap-south-1.
+[15:13:41] Deleting Auto Scaling Group (terminates its instances)
+[15:15:11] Deleting load balancer
+[15:15:14] Deleting target group
+[15:15:27] Deleting launch template
+[15:15:30] Deleting security group vmfail-app-sg (sg-0ba7694fd29e7b774)
+[15:21:10] Deleting security group vmfail-alb-sg (sg-07eab8e4a658f761a)
+[15:26:44] Deleting instance profile
+[15:26:50] Deleting IAM role
+{
+    "BucketArn": "arn:aws:s3:::vmfail-app-851226124537-ap-south-1",
+    "BucketRegion": "ap-south-1",
+    "AccessPointAlias": false
+}
+[15:26:55] Emptying and deleting bucket vmfail-app-851226124537-ap-south-1
+[15:26:58] Cleanup finished. Verify with: scripts/status.sh (should report the ASG missing)
+exit 0

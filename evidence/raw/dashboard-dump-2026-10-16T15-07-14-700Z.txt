@@ -1,0 +1,172 @@
+OVERALL: HEALTHY
+KPIs: HTTP availability (this run) 100.0% 490 ok · 0 failed of 490 requests | Healthy targets / desired capacity 2 / 2 | ASG instances InService 2 / 2 min 2 · max 3 · health check: ELB | Serving instances (last 10 s) 2 EC2-2, Replacement 1
+
+=== RUN RESULT ===
+Run result
+complete
+Application remained accessible. All 251 requests sent during the failure window returned HTTP 200. No downtime was observed at a 700 ms sampling interval; a gap shorter than that would not show up.
+Failed instance
+EC2-1 i-0d39d030fa44d115a
+Failure confirmed (AWS)
+15:04:06 · ASG activity 15:04:06
+Served traffic after failure
+EC2-2 i-0247b25cc8d418e9c (250)
+Replacement instance
+i-0c94b00e34dcc54be (ap-south-1a)
+Replacement healthy at
+15:07:02
+Time to 2 healthy targets
+2 min 55 s
+Requests during failure
+251 ok · 0 failed
+Observed downtime
+none observed
+
+Durations are measured with this browser's clock, from when the dashboard saw each AWS state change (polled every 2 s), so they are accurate to about ±2 s.
+
+=== INSTANCES ===
+EC2-1
+TERMINATED
+i-0d39d030fa44d115a
+Out of service: terminated
+Availability Zone
+ap-south-1a
+EC2 state
+terminated
+ASG lifecycle
+not in group
+Target health
+not registered
+Launched
+14:58:01
+Private IP
+—
+Requests served this run
+120 · 25%
+EC2-2
+HEALTHY
+i-0247b25cc8d418e9c
+Serving traffic
+Availability Zone
+ap-south-1b
+EC2 state
+running
+ASG lifecycle
+InService
+Target health
+healthy
+Launched
+14:58:01
+Private IP
+172.31.4.15
+Requests served this run
+361 · 74%
+Replacement 1
+HEALTHY
+i-0c94b00e34dcc54be
+Serving traffic
+Availability Zone
+ap-south-1a
+EC2 state
+running
+ASG lifecycle
+InService
+Target health
+healthy
+Launched
+15:04:14
+Private IP
+172.31.39.224
+Requests served this run
+8 · 2%
+
+=== TIMELINE (newest first) ===
+15:07:02
+AWS observed
+Recovery complete: 2 healthy targets, 2 min 55 s after the failure was confirmed
+15:07:02
+AWS observed
+Application status: RECOVERING → HEALTHY
+15:07:02
+AWS observed
+2 healthy targets restored (desired capacity 2)
+15:07:02
+AWS observed
+Replacement 1 i-0c94b00e34dcc54be passed ALB health checks; it now receives traffic
+15:05:09
+AWS observed
+EC2-1 i-0d39d030fa44d115a ASG lifecycle: Terminating → removed from group
+15:05:08
+ASG activity
+Successful: Terminating EC2 instance: i-0d39d030fa44d115a
+15:04:58
+AWS observed
+EC2-1 i-0d39d030fa44d115a EC2 state: shutting-down → terminated
+Client.UserInitiatedShutdown: User initiated shutdown
+15:04:31
+AWS observed
+Replacement 1 i-0c94b00e34dcc54be target health: initial → unhealthy
+Health checks failed
+15:04:29
+AWS observed
+EC2-1 i-0d39d030fa44d115a EC2 state: running → shutting-down
+Client.UserInitiatedShutdown: User initiated shutdown
+15:04:27
+AWS observed
+EC2-1 i-0d39d030fa44d115a target health: draining → deregistered
+15:04:20
+AWS observed
+Replacement 1 i-0c94b00e34dcc54be target health: not registered → initial
+Target registration is in progress
+15:04:20
+AWS observed
+Replacement 1 i-0c94b00e34dcc54be ASG lifecycle: Pending → InService
+15:04:20
+AWS observed
+Replacement 1 i-0c94b00e34dcc54be EC2 state: pending → running
+15:04:20
+ASG activity
+Successful: Launching a new EC2 instance: i-0c94b00e34dcc54be
+15:04:15
+AWS observed
+Application status: DEGRADED → RECOVERING
+15:04:15
+AWS observed
+Auto Scaling launched replacement instance i-0c94b00e34dcc54be in ap-south-1a (EC2 state: pending)
+15:04:14
+ASG activity
+Launching a new EC2 instance: i-0c94b00e34dcc54be
+At 2026-10-16T15:04:13Z an instance was started in response to a difference between desired and actual capacity, increasing the capacity from 1 to 2.
+15:04:09
+AWS observed
+Healthy targets: 2 → 1 (desired 2)
+15:04:09
+AWS observed
+EC2-1 i-0d39d030fa44d115a target health: healthy → draining
+Target deregistration is in progress
+15:04:07
+HTTP observed
+Request #223 after the failure was served by EC2-2 i-0247b25cc8d418e9c
+15:04:06
+AWS observed
+Application status: HEALTHY → DEGRADED
+15:04:06
+AWS observed
+EC2-1 i-0d39d030fa44d115a ASG lifecycle: InService → Terminating
+15:04:06
+AWS observed
+Failure confirmed by AWS: EC2-1 i-0d39d030fa44d115a is leaving service
+AWS scaling activity: Terminating EC2 instance: i-0d39d030fa44d115a
+15:04:06
+Operator request
+Terminating EC2 instance: i-0d39d030fa44d115a
+At 2026-10-16T15:04:06Z instance i-0d39d030fa44d115a was taken out of service in response to a user request.
+15:01:32
+Dashboard
+Normal operation started: sending real requests through the load balancer
+15:01:31
+AWS observed
+All 2 instances healthy in the target group (desired capacity 2)
+15:01:31
+Dashboard
+Dashboard connected to AWS state. Baseline: EC2-1 = i-0d39d030fa44d115a (ap-south-1a), EC2-2 = i-0247b25cc8d418e9c (ap-south-1b)

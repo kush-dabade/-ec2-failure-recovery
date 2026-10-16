@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>EC2 Failure Recovery</title>
+  <link rel="stylesheet" href="/app.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7l8-4 8 4v10l-8 4-8-4z" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M4 7l8 4 8-4M12 11v10" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+    <div>
+      <h1>EC2 High Availability &amp; Failure Recovery</h1>
+      <p class="sub">Live experiment · <span id="region">ap-south-1</span> · Auto Scaling Group <code id="asg-name">—</code></p>
+    </div>
+  </div>
+  <div class="overall" id="overall" data-status="UNKNOWN" role="status" aria-live="polite">
+    <span class="overall-icon" aria-hidden="true"></span>
+    <span class="overall-label">Application</span>
+    <strong id="overall-text">CONNECTING</strong>
+  </div>
+</header>
+
+<main>
+  <section class="endpoint card">
+    <div class="endpoint-main">
+      <span class="eyebrow">Application endpoint (Application Load Balancer)</span>
+      <code id="endpoint">—</code>
+    </div>
+    <dl class="endpoint-facts">
+      <div><dt>Last HTTP response</dt><dd id="last-http">—</dd></div>
+      <div><dt>This page's state served by</dt><dd id="state-served-by">—</dd></div>
+      <div><dt>AWS state fetched</dt><dd id="state-age">—</dd></div>
+    </dl>
+  </section>
+
+  <section class="controls card" aria-label="Demonstration controls">
+    <div class="control-group">
+      <span class="eyebrow">Traffic</span>
+      <div class="buttons">
+        <button id="btn-start" class="btn primary">
+          <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2.5v11l9-5.5z" fill="currentColor"/></svg>
+          Start normal operation
+        </button>
+        <button id="btn-stop" class="btn" disabled>
+          <svg viewBox="0 0 16 16" aria-hidden="true"><rect x="3.5" y="3.5" width="9" height="9" rx="1" fill="currentColor"/></svg>
+          Stop traffic
+        </button>
+        <button id="btn-refresh" class="btn">
+          <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M13 8a5 5 0 1 1-1.5-3.6M13 2.5v3h-3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          Refresh state &amp; start new run
+        </button>
+      </div>
+      <p class="hint" id="traffic-hint">Sends real HTTP requests to the load balancer and records which EC2 instance answered each one.</p>
+    </div>
+    <div class="control-group failure-panel">
+      <span class="eyebrow">Failure injection: operator laptop only</span>
+      <div class="fail-rows" id="fail-rows"><p class="hint">Waiting for AWS state…</p></div>
+      <p class="hint">This public page is <strong>read-only</strong> and cannot terminate anything. The operator runs
+        <code>scripts/fail-instance.sh</code> locally. The script checks that the instance belongs to this Auto Scaling Group and asks for typed confirmation. This page reports a failure only after AWS confirms it.</p>
+    </div>
+  </section>
+
+  <section class="kpis" aria-label="Key measurements">
+    <div class="kpi card">
+      <span class="kpi-label">HTTP availability (this run)</span>
+      <span class="kpi-value" id="kpi-avail">—</span>
+      <span class="kpi-foot" id="kpi-avail-foot">no requests yet</span>
+    </div>
+    <div class="kpi card">
+      <span class="kpi-label">Healthy targets / desired capacity</span>
+      <span class="kpi-value"><span id="kpi-healthy">—</span><span class="kpi-of"> / <span id="kpi-desired">—</span></span></span>
+      <div class="slots" id="kpi-slots" aria-hidden="true"></div>
+    </div>
+    <div class="kpi card">
+      <span class="kpi-label">ASG instances InService</span>
+      <span class="kpi-value" id="kpi-inservice">—</span>
+      <span class="kpi-foot" id="kpi-asg-foot">min — · max —</span>
+    </div>
+    <div class="kpi card">
+      <span class="kpi-label">Serving instances (last 10 s)</span>
+      <span class="kpi-value" id="kpi-serving">—</span>
+      <span class="kpi-foot" id="kpi-serving-foot">based on real responses</span>
+    </div>
+  </section>
+
+  <div class="grid">
+    <div class="col-main">
+      <section class="card">
+        <div class="card-head">
+          <h2>EC2 instances</h2>
+          <span class="legend-note">EC2 state · ASG lifecycle · target health are reported separately</span>
+        </div>
+        <div class="instances" id="instances"><p class="hint">Waiting for AWS state…</p></div>
+      </section>
+
+      <section class="card">
+        <div class="card-head">
+          <h2>Traffic routing</h2>
+          <span class="legend-note" id="routing-note">Each dot is a real request; it goes to the instance that answered it</span>
+        </div>
+        <div class="routing-wrap"><svg id="routing" class="routing" viewBox="0 0 760 260" role="img" aria-label="Traffic routing from browser through load balancer to instances"></svg></div>
+        <div class="routing-legend">
+          <span><i class="ln ln-healthy"></i>healthy target</span>
+          <span><i class="ln ln-warn"></i>initial / draining</span>
+          <span><i class="ln ln-down"></i>unhealthy / removed</span>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-head">
+          <h2>Request log</h2>
+          <span class="legend-note" id="log-note">Newest first · each row is one real request through the ALB</span>
+        </div>
+        <div class="table-wrap">
+          <table class="log">
+            <thead><tr><th>Time</th><th>#</th><th>HTTP</th><th>Served by</th><th>AZ</th><th class="num">Latency</th></tr></thead>
+            <tbody id="log-body"><tr class="empty"><td colspan="6">Press “Start normal operation” to send requests.</td></tr></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+
+    <aside class="col-side">
+      <section class="card" id="summary-card" hidden>
+        <div class="card-head"><h2>Run result</h2><span class="legend-note" id="summary-state"></span></div>
+        <div id="summary"></div>
+      </section>
+
+      <section class="card timeline-card">
+        <div class="card-head">
+          <h2>Event timeline</h2>
+          <span class="legend-note">Local time</span>
+        </div>
+        <div class="tl-legend">
+          <span class="tag tag-aws">AWS observed</span>
+          <span class="tag tag-activity">ASG activity</span>
+          <span class="tag tag-operator">Operator request</span>
+          <span class="tag tag-http">HTTP observed</span>
+          <span class="tag tag-dash">Dashboard</span>
+        </div>
+        <ol class="timeline" id="timeline"></ol>
+      </section>
+    </aside>
+  </div>
+
+  <section class="card notes">
+    <h2>How recovery works here</h2>
+    <p>The ALB health-checks <code>/health</code> on each instance and routes only to healthy targets. When an instance is terminated, the target group removes it from rotation and the remaining instance(s) keep serving. The Auto Scaling Group sees capacity below its desired count and launches a <em>new</em> instance with a new ID. Terminated instances never come back, so the dashboard has no reset that restores them.</p>
+  </section>
+</main>
+
+<footer class="foot">
+  <span>State comes from the AWS APIs (Auto Scaling, ELBv2, EC2) through a read-only instance role. Instance identity comes from EC2 metadata (IMDSv2).</span>
+</footer>
+</body>
+</html>

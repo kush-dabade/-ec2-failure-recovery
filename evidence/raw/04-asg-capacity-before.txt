@@ -1,0 +1,17 @@
+# captured 2026-10-16T15:02:33Z (20:32:33 IST)
+$ bash -c aws autoscaling describe-auto-scaling-groups --auto-scaling-group-names vmfail-asg --query "AutoScalingGroups[0].{Name:AutoScalingGroupName,Min:MinSize,Desired:DesiredCapacity,Max:MaxSize,HealthCheck:HealthCheckType,Grace:HealthCheckGracePeriod}" --output table; aws autoscaling describe-auto-scaling-groups --auto-scaling-group-names vmfail-asg --query "AutoScalingGroups[0].Instances[].{Instance:InstanceId,AZ:AvailabilityZone,Lifecycle:LifecycleState,Health:HealthStatus}" --output table
+-----------------------------------------------------------------
+|                   DescribeAutoScalingGroups                   |
++---------+--------+--------------+------+-------+--------------+
+| Desired | Grace  | HealthCheck  | Max  |  Min  |    Name      |
++---------+--------+--------------+------+-------+--------------+
+|  2      |  300   |  ELB         |  3   |  2    |  vmfail-asg  |
++---------+--------+--------------+------+-------+--------------+
+----------------------------------------------------------------
+|                   DescribeAutoScalingGroups                  |
++-------------+----------+-----------------------+-------------+
+|     AZ      | Health   |       Instance        |  Lifecycle  |
++-------------+----------+-----------------------+-------------+
+|  ap-south-1b|  Healthy |  i-0247b25cc8d418e9c  |  InService  |
+|  ap-south-1a|  Healthy |  i-0d39d030fa44d115a  |  InService  |
++-------------+----------+-----------------------+-------------+

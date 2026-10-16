@@ -1,0 +1,10 @@
+# captured 2026-10-16T15:07:10Z (20:37:10 IST)
+$ aws elbv2 describe-target-health --target-group-arn arn:aws:elasticloadbalancing:ap-south-1:851226124537:targetgroup/vmfail-tg/f80399bea6330204 --query TargetHealthDescriptions[].{Target:Target.Id,State:TargetHealth.State,Reason:TargetHealth.Reason} --output table
+----------------------------------------------
+|            DescribeTargetHealth            |
++--------+-----------+-----------------------+
+| Reason |   State   |        Target         |
++--------+-----------+-----------------------+
+|  None  |  healthy  |  i-0247b25cc8d418e9c  |
+|  None  |  healthy  |  i-0c94b00e34dcc54be  |
++--------+-----------+-----------------------+

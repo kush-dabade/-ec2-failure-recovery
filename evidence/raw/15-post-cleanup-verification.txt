@@ -1,0 +1,28 @@
+# post-cleanup verification (final) 2026-10-16T15:38:55Z
+ASG vmfail-asg: 0 found
+experiment instances:
+  i-0c94b00e34dcc54be	terminated
+  i-0d39d030fa44d115a	terminated
+  i-0247b25cc8d418e9c	terminated
+non-terminated instances in region: 0
+load balancers in region: 0
+vmfail target groups: []
+vmfail launch templates: []
+vmfail security groups: []
+unattached EBS volumes in region: 0
+experiment-tagged EBS volumes: []
+Elastic IPs: 0
+ENIs in default VPC: 0
+vmfail IAM roles: []  instance profiles: []
+S3 bucket vmfail-app-851226124537-ap-south-1: 404 Not Found (deleted)
+vmfail CloudWatch log groups: 0
+service-linked roles (AWS-managed, intentionally kept, no charge):
+  AWSServiceRoleForAutoScaling
+  AWSServiceRoleForElasticLoadBalancing
+unrelated resources (must still exist):
+  ABC-Business-Web-SG
+  ABC-Business-EC2-S3-Role
+  ABC-Business-EC2-S3-Role
+  default VPC available, subnets: 3
+  VPC vpc-0c05139e3a3b72c4a: available
+Free plan credits remaining: 139.77 USD

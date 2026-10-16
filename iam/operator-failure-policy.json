@@ -1,0 +1,32 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "ReadExperimentState",
+      "Effect": "Allow",
+      "Action": [
+        "autoscaling:DescribeAutoScalingGroups",
+        "autoscaling:DescribeScalingActivities",
+        "elasticloadbalancing:DescribeTargetGroups",
+        "elasticloadbalancing:DescribeTargetHealth",
+        "ec2:DescribeInstances"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Sid": "TerminateOnlyInExperimentAsg",
+      "Effect": "Allow",
+      "Action": "autoscaling:TerminateInstanceInAutoScalingGroup",
+      "Resource": "arn:aws:autoscaling:ap-south-1:851226124537:autoScalingGroup:*:autoScalingGroupName/vmfail-asg"
+    },
+    {
+      "Sid": "AbruptTerminateOnlyExperimentInstances",
+      "Effect": "Allow",
+      "Action": "ec2:TerminateInstances",
+      "Resource": "arn:aws:ec2:ap-south-1:851226124537:instance/*",
+      "Condition": {
+        "StringEquals": { "aws:ResourceTag/aws:autoscaling:groupName": "vmfail-asg" }
+      }
+    }
+  ]
+}

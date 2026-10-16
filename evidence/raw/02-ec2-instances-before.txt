@@ -1,0 +1,10 @@
+# captured 2026-10-16T15:02:29Z (20:32:29 IST)
+$ aws ec2 describe-instances --filters Name=tag:aws:autoscaling:groupName,Values=vmfail-asg --query Reservations[].Instances[].{InstanceId:InstanceId,State:State.Name,AZ:Placement.AvailabilityZone,Type:InstanceType,PrivateIP:PrivateIpAddress,Launched:LaunchTime,IMDSv2:MetadataOptions.HttpTokens} --output table
+-------------------------------------------------------------------------------------------------------------------------
+|                                                   DescribeInstances                                                   |
++-------------+-----------+----------------------+----------------------------+----------------+-----------+------------+
+|     AZ      |  IMDSv2   |     InstanceId       |         Launched           |   PrivateIP    |   State   |   Type     |
++-------------+-----------+----------------------+----------------------------+----------------+-----------+------------+
+|  ap-south-1a|  required |  i-0d39d030fa44d115a |  2026-10-16T14:58:01+00:00 |  172.31.38.168 |  running  |  t3.micro  |
+|  ap-south-1b|  required |  i-0247b25cc8d418e9c |  2026-10-16T14:58:01+00:00 |  172.31.4.15   |  running  |  t3.micro  |
++-------------+-----------+----------------------+----------------------------+----------------+-----------+------------+

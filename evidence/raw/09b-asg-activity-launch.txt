@@ -1,0 +1,32 @@
+# captured 2026-10-16T15:04:17Z (20:34:17 IST)
+$ aws autoscaling describe-scaling-activities --auto-scaling-group-name vmfail-asg --max-items 4 --query Activities[].{Start:StartTime,End:EndTime,Status:StatusCode,Description:Description,Cause:Cause} --output json
+[
+    {
+        "Start": "2026-10-16T15:04:14.983000+00:00",
+        "End": null,
+        "Status": "PreInService",
+        "Description": "Launching a new EC2 instance: i-0c94b00e34dcc54be",
+        "Cause": "At 2026-10-16T15:04:13Z an instance was started in response to a difference between desired and actual capacity, increasing the capacity from 1 to 2."
+    },
+    {
+        "Start": "2026-10-16T15:04:06.711000+00:00",
+        "End": null,
+        "Status": "WaitingForELBConnectionDraining",
+        "Description": "Terminating EC2 instance: i-0d39d030fa44d115a - Waiting For ELB Connection Draining.",
+        "Cause": "At 2026-10-16T15:04:06Z instance i-0d39d030fa44d115a was taken out of service in response to a user request."
+    },
+    {
+        "Start": "2026-10-16T14:58:02.088000+00:00",
+        "End": "2026-10-16T14:58:07+00:00",
+        "Status": "Successful",
+        "Description": "Launching a new EC2 instance: i-0d39d030fa44d115a",
+        "Cause": "At 2026-10-16T14:57:58Z a user request created an AutoScalingGroup changing the desired capacity from 0 to 2.  At 2026-10-16T14:58:00Z an instance was started in response to a difference between desired and actual capacity, increasing the capacity from 0 to 2."
+    },
+    {
+        "Start": "2026-10-16T14:58:01.964000+00:00",
+        "End": "2026-10-16T14:58:07+00:00",
+        "Status": "Successful",
+        "Description": "Launching a new EC2 instance: i-0247b25cc8d418e9c",
+        "Cause": "At 2026-10-16T14:57:58Z a user request created an AutoScalingGroup changing the desired capacity from 0 to 2.  At 2026-10-16T14:58:00Z an instance was started in response to a difference between desired and actual capacity, increasing the capacity from 0 to 2."
+    }
+]

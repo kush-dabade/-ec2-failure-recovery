@@ -1,0 +1,34 @@
+Script started on 2026-10-16 15:03:47+00:00 [COMMAND="./scripts/fail-instance.sh i-0d39d030fa44d115a" <not executed on terminal>]
+
+Instances in Auto Scaling Group vmfail-asg (ap-south-1):
+  #   INSTANCE              AZ           LIFECYCLE    ASG       TARGET
+  1)  i-0d39d030fa44d115a   ap-south-1a  InService    Healthy   healthy
+  2)  i-0247b25cc8d418e9c   ap-south-1b  InService    Healthy   healthy
+
+About to TERMINATE a real EC2 instance:
+  instance      i-0d39d030fa44d115a  (ap-south-1a)
+  group         vmfail-asg
+  mode          asg (drain from ALB, then terminate; ASG replaces it)
+  healthy now   2 target(s)
+This cannot be undone. Auto Scaling will launch a NEW instance with a different ID.
+
+Type the instance ID to confirm: i-0d39d030fa44d115a
+Type "terminate" to proceed: terminate
+0ad68514-f794-df14-2ed0-acbb42a670fe	Terminating EC2 instance: i-0d39d030fa44d115a
+[1;34m[15:04:06][0m Termination requested at 15:04:06. Watch the dashboard, or follow here.
+[1;34m[15:04:07][0m Following recovery (Ctrl-C to stop watching; recovery continues regardless)
+  + 12s  failed=running  healthy targets=1/2  ASG: i-0247b25cc8d418e9c:InService i-0c94b00e34dcc54be:InService 
+  + 28s  failed=shutting-down  healthy targets=1/2  ASG: i-0247b25cc8d418e9c:InService i-0c94b00e34dcc54be:InService 
+  + 44s  failed=shutting-down  healthy targets=1/2  ASG: i-0247b25cc8d418e9c:InService i-0c94b00e34dcc54be:InService 
+  + 63s  failed=terminated  healthy targets=1/2  ASG: i-0247b25cc8d418e9c:InService i-0c94b00e34dcc54be:InService 
+  + 78s  failed=terminated  healthy targets=1/2  ASG: i-0247b25cc8d418e9c:InService i-0c94b00e34dcc54be:InService 
+  + 92s  failed=terminated  healthy targets=1/2  ASG: i-0247b25cc8d418e9c:InService i-0c94b00e34dcc54be:InService 
+  +106s  failed=terminated  healthy targets=1/2  ASG: i-0247b25cc8d418e9c:InService i-0c94b00e34dcc54be:InService 
+  +121s  failed=terminated  healthy targets=1/2  ASG: i-0247b25cc8d418e9c:InService i-0c94b00e34dcc54be:InService 
+  +135s  failed=terminated  healthy targets=1/2  ASG: i-0247b25cc8d418e9c:InService i-0c94b00e34dcc54be:InService 
+  +149s  failed=terminated  healthy targets=1/2  ASG: i-0247b25cc8d418e9c:InService i-0c94b00e34dcc54be:InService 
+  +164s  failed=terminated  healthy targets=1/2  ASG: i-0247b25cc8d418e9c:InService i-0c94b00e34dcc54be:InService 
+  +178s  failed=terminated  healthy targets=2/2  ASG: i-0247b25cc8d418e9c:InService i-0c94b00e34dcc54be:InService 
+[1;34m[15:07:08][0m Recovered: 2 healthy targets 178s after termination was requested.
+
+Script done on 2026-10-16 15:07:08+00:00 [COMMAND_EXIT_CODE="0"]

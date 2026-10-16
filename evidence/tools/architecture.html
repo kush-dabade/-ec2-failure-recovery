@@ -1,0 +1,70 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><style>
+body{margin:0;background:#fff;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+svg text{fill:#1b1b1a}
+.t{font:600 15px system-ui,sans-serif}.s{font:12px system-ui,sans-serif;fill:#52514e}.m{font:12px ui-monospace,Menlo,Consolas,monospace;fill:#33322f}
+.box{fill:#fff;stroke:#8f8e88;stroke-width:1.4;rx:8}
+.zone{fill:#f6f8fb;stroke:#2a78d6;stroke-width:1.2;stroke-dasharray:6 4}
+.vpc{fill:#fbfbf9;stroke:#52514e;stroke-width:1.2}
+.arrow{stroke:#2a78d6;stroke-width:2;fill:none;marker-end:url(#a)}
+.ctl{stroke:#c0571f;stroke-width:2;fill:none;marker-end:url(#b);stroke-dasharray:7 4}
+.ro{stroke:#6250d6;stroke-width:1.6;fill:none;marker-end:url(#c);stroke-dasharray:3 4}
+.fail{stroke:#d03b3b;stroke-width:2.2}
+</style></head><body>
+<svg width="1200" height="670" viewBox="0 0 1200 670">
+<defs>
+ <marker id="a" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10z" fill="#2a78d6"/></marker>
+ <marker id="b" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10z" fill="#c0571f"/></marker>
+ <marker id="c" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10z" fill="#6250d6"/></marker>
+</defs>
+<text x="20" y="30" class="t" style="font-size:18px">EC2 failure-recovery experiment: deployed architecture (ap-south-1, account 851226124537)</text>
+
+<!-- clients -->
+<rect class="box" x="20" y="90" width="170" height="70"/><text x="36" y="118" class="t">Browser</text><text x="36" y="138" class="s">dashboard + HTTP probe</text>
+<rect class="box" x="20" y="440" width="200" height="92" style="stroke:#c0571f"/><text x="36" y="468" class="t">Operator laptop</text><text x="36" y="488" class="m">fail-instance.sh</text><text x="36" y="506" class="s">AWS CLI, typed confirmation</text><text x="36" y="522" class="s">(not reachable from the web)</text>
+
+<!-- VPC -->
+<rect class="vpc" x="240" y="60" width="700" height="570" rx="12"/>
+<text x="256" y="84" class="t">Default VPC vpc-0bbf56888f5140e56</text>
+
+<rect class="box" x="260" y="105" width="250" height="78" style="stroke:#2a78d6"/>
+<text x="276" y="131" class="t">Application Load Balancer</text><text x="276" y="150" class="m">vmfail-alb  HTTP :80</text><text x="276" y="168" class="s">SG vmfail-alb-sg: 80 in · 8080 out</text>
+<rect class="box" x="560" y="105" width="370" height="78"/>
+<text x="576" y="131" class="t">Target group vmfail-tg</text><text x="576" y="150" class="m">HTTP :8080  health check GET /health</text><text x="576" y="168" class="s">interval 10 s · healthy/unhealthy threshold 2 · drain 20 s</text>
+
+<rect class="zone" x="250" y="225" width="320" height="255" rx="10"/><text x="266" y="248" class="t">ap-south-1a</text><text x="266" y="472" class="m">subnet-0e785dde39bd48372</text>
+<rect class="zone" x="600" y="225" width="320" height="255" rx="10"/><text x="616" y="248" class="t">ap-south-1b</text><text x="616" y="472" class="m">subnet-0dc42e44ded524d9d</text>
+
+<rect class="box fail" x="270" y="265" width="280" height="88" style="stroke-dasharray:7 4;fill:#fdf3f3"/>
+<text x="286" y="290" class="t" style="fill:#b02a2a">EC2-1 · TERMINATED</text><text x="286" y="310" class="m">i-0d39d030fa44d115a</text><text x="286" y="328" class="s">t3.micro · AL2023 · IMDSv2 required</text><text x="286" y="344" class="s">app :8080 (server.py)</text>
+<rect class="box" x="270" y="368" width="280" height="88" style="stroke:#0ca30c;stroke-width:2"/>
+<text x="286" y="393" class="t">Replacement (by ASG)</text><text x="286" y="413" class="m">i-0c94b00e34dcc54be</text><text x="286" y="431" class="s">t3.micro · same launch template</text><text x="286" y="447" class="s">app :8080 (server.py)</text>
+<rect class="box" x="620" y="265" width="280" height="88" style="stroke:#0ca30c;stroke-width:2"/>
+<text x="636" y="290" class="t">EC2-2 (survivor)</text><text x="636" y="310" class="m">i-0247b25cc8d418e9c</text><text x="636" y="328" class="s">t3.micro · AL2023 · IMDSv2 required</text><text x="636" y="344" class="s">app :8080 (server.py)</text>
+
+<rect class="box" x="250" y="510" width="670" height="105" style="stroke:#c98500"/>
+<text x="266" y="535" class="t">Auto Scaling Group vmfail-asg</text><text x="266" y="555" class="s">min 2 · desired 2 · max 3 · health check type ELB (grace 300 s) · subnets 1a + 1b</text>
+<text x="266" y="575" class="m">launch template vmfail-lt · instance profile vmfail-dashboard-readonly-profile</text>
+<text x="266" y="595" class="s">SG vmfail-app-sg: 8080 in from ALB SG only · 443 out only · no SSH</text>
+
+<!-- AWS APIs -->
+<rect class="box" x="970" y="105" width="210" height="150" style="stroke:#6250d6"/>
+<text x="986" y="131" class="t">AWS APIs (read-only)</text><text x="986" y="152" class="s">autoscaling:Describe*</text><text x="986" y="170" class="s">elbv2:DescribeTargetHealth</text><text x="986" y="188" class="s">ec2:DescribeInstances</text><text x="986" y="210" class="s">via instance role</text><text x="986" y="228" class="m">vmfail-dashboard-</text><text x="986" y="244" class="m">readonly-role</text>
+<rect class="box" x="970" y="285" width="210" height="80"/>
+<text x="986" y="311" class="t">S3 (private)</text><text x="986" y="331" class="m">vmfail-app-…</text><text x="986" y="349" class="s">app package, SSE-S3, TLS only</text>
+<rect class="box" x="970" y="440" width="210" height="92" style="stroke:#c0571f"/>
+<text x="986" y="466" class="t">Auto Scaling API</text><text x="986" y="486" class="s">TerminateInstanceIn-</text><text x="986" y="502" class="s">AutoScalingGroup</text><text x="986" y="520" class="s">(should-decrement = false)</text>
+
+<!-- flows -->
+<path class="arrow" d="M190 125 L258 140"/>
+<path class="arrow" d="M510 144 L558 144"/>
+<path class="arrow" d="M620 183 C 560 215, 450 225, 410 263"/>
+<path class="arrow" d="M860 183 L860 263"/>
+<path class="arrow" d="M585 183 L585 412 L552 412"/>
+<path class="ctl" d="M220 495 L235 495 L235 640 L950 640 L950 495 L968 495"/>
+<path class="ctl" d="M960 532 L960 560 L922 560"/>
+<path class="ro" d="M900 290 C 940 260, 945 200, 968 190"/>
+<path class="ro" d="M900 330 L968 330"/>
+<text x="970" y="575" class="s"><tspan style="fill:#2a78d6;font-weight:600">— blue</tspan>: HTTP traffic</text><text x="970" y="595" class="s"><tspan style="fill:#c0571f;font-weight:600">- - orange</tspan>: operator failure injection</text><text x="970" y="615" class="s"><tspan style="fill:#6250d6;font-weight:600">··· purple</tspan>: read-only API / app package</text>
+<text x="200" y="112" class="s" style="fill:#2a78d6">HTTP</text>
+</svg></body></html>

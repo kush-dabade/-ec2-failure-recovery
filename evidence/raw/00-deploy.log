@@ -1,0 +1,46 @@
+
+This will create BILLABLE resources in ap-south-1 (account 851226124537):
+  - S3 bucket          vmfail-app-851226124537-ap-south-1 (private, app package only)
+  - IAM role/profile   vmfail-dashboard-readonly-role / vmfail-dashboard-readonly-profile (read-only describe + read app package)
+  - Security groups    vmfail-alb-sg (80 from 0.0.0.0/0), vmfail-app-sg (8080 from ALB only)
+  - Target group       vmfail-tg (HTTP 8080, /health)
+  - Load balancer      vmfail-alb (internet-facing, PUBLIC endpoint on port 80)
+  - Launch template    vmfail-lt (t3.micro, Amazon Linux 2023, IMDSv2 required)
+  - Auto Scaling Group vmfail-asg (min 2 / desired 2 / max 3)
+AWS will also auto-create the service-linked roles AWSServiceRoleForAutoScaling and
+AWSServiceRoleForElasticLoadBalancing if they do not exist yet (free; kept after cleanup).
+Estimated cost: ~US$0.069/hour (~US$1.66/day), charged 24/7 until scripts/cleanup.sh is run.
+
+{
+    "BucketArn": "arn:aws:s3:::vmfail-app-851226124537-ap-south-1",
+    "BucketRegion": "ap-south-1",
+    "AccessPointAlias": false
+}
+[14:57:23] Bucket vmfail-app-851226124537-ap-south-1 exists (owned by this experiment)
+[14:57:29] IAM role vmfail-dashboard-readonly-role exists (owned by this experiment)
+[14:57:39] Security groups: ALB sg-07eab8e4a658f761a, app sg-0ba7694fd29e7b774
+[14:57:41] Creating target group vmfail-tg
+[14:57:44] Creating load balancer vmfail-alb
+[14:57:49] Creating HTTP listener
+[14:57:50] app build 17c5c00f7105 (21402 bytes) -> s3://vmfail-app-851226124537-ap-south-1/app/app-17c5c00f7105.tar.gz; user-data 1621 bytes
+[14:57:54] Creating launch template vmfail-lt
+[14:57:56] Creating Auto Scaling Group vmfail-asg
+[14:57:58] Waiting for 2 healthy targets (typically 3-5 minutes)
+
+  healthy targets: 0/2 
+  healthy targets: 0/2 
+  healthy targets: 0/2 
+  healthy targets: 0/2 
+  healthy targets: 0/2 
+  healthy targets: 0/2 
+  healthy targets: 0/2 
+  healthy targets: 0/2 
+  healthy targets: 0/2 
+  healthy targets: 0/2 
+  healthy targets: 1/2 
+  healthy targets: 1/2 
+  healthy targets: 1/2 
+  healthy targets: 1/2 
+  healthy targets: 2/2 
+[15:00:35] Dashboard: http://vmfail-alb-1890781929.ap-south-1.elb.amazonaws.com/
+exit 0

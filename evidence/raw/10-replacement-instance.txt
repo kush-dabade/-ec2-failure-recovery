@@ -1,0 +1,11 @@
+# captured 2026-10-16T15:04:19Z (20:34:19 IST)
+$ aws ec2 describe-instances --instance-ids i-0c94b00e34dcc54be --query Reservations[].Instances[].{InstanceId:InstanceId,State:State.Name,AZ:Placement.AvailabilityZone,Launched:LaunchTime,PrivateIP:PrivateIpAddress} --output table
+---------------------------------------------
+|             DescribeInstances             |
++-------------+-----------------------------+
+|  AZ         |  ap-south-1a                |
+|  InstanceId |  i-0c94b00e34dcc54be        |
+|  Launched   |  2026-10-16T15:04:14+00:00  |
+|  PrivateIP  |  172.31.39.224              |
+|  State      |  running                    |
++-------------+-----------------------------+

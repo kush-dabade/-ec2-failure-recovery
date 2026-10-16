@@ -1,0 +1,26 @@
+probe: GET /api/whoami every 0.5 s, 3 s timeout
+window: 2026-10-16T15:01:30.953+00:00 -> 2026-10-16T15:07:52.621+00:00
+termination requested (AWS activity): 2026-10-16T15:04:06+00:00
+2 healthy targets observed: 2026-10-16T15:07:02+00:00
+
+ALL
+  requests=754 ok=754 failed=0
+  served by: {'i-0247b25cc8d418e9c': 560, 'i-0d39d030fa44d115a': 145, 'i-0c94b00e34dcc54be': 49}
+  latency ms: p50=54 p95=95 max=3063
+BEFORE failure
+  requests=307 ok=307 failed=0
+  served by: {'i-0247b25cc8d418e9c': 163, 'i-0d39d030fa44d115a': 144}
+  latency ms: p50=56 p95=85 max=1087
+DURING failure and recovery
+  requests=347 ok=347 failed=0
+  served by: {'i-0247b25cc8d418e9c': 346, 'i-0d39d030fa44d115a': 1}
+  latency ms: p50=53 p95=87 max=3063
+AFTER recovery
+  requests=100 ok=100 failed=0
+  served by: {'i-0c94b00e34dcc54be': 49, 'i-0247b25cc8d418e9c': 51}
+  latency ms: p50=53 p95=196 max=1199
+
+failed requests: none
+last response from terminated i-0d39d030fa44d115a: 2026-10-16T15:04:07.251+00:00
+first response from replacement i-0c94b00e34dcc54be: 2026-10-16T15:07:02.400+00:00
+longest interval between consecutive successful responses: 3.063 s

@@ -1,0 +1,8 @@
+2026-10-16T15:04:06+00:00 AWS: i-0d39d030fa44d115a leaving service (lifecycle=Terminating, target=healthy)
+2026-10-16T15:04:15+00:00 AWS: replacement i-0c94b00e34dcc54be in ap-south-1a (ec2=pending, lifecycle=Pending)
+2026-10-16T15:04:23+00:00 AWS: replacement i-0c94b00e34dcc54be running
+2026-10-16T15:04:23+00:00 AWS: replacement i-0c94b00e34dcc54be registered, health checks in progress
+2026-10-16T15:04:30+00:00 AWS: i-0d39d030fa44d115a EC2 state shutting-down
+2026-10-16T15:07:02+00:00 AWS: replacement i-0c94b00e34dcc54be healthy target
+2026-10-16T15:07:02+00:00 AWS: recovered: 2 healthy targets, desired 2
+2026-10-16T15:07:14+00:00 watch finished

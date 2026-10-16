@@ -1,0 +1,18 @@
+READY 2026-10-16T15:01:32.140Z
+SHOT /home/kush/projects/vm_failure/evidence/01-dashboard-healthy.png 2026-10-16T15:02:02.758Z
+SHOT /home/kush/projects/vm_failure/evidence/01b-dashboard-status-endpoint.png 2026-10-16T15:02:04.709Z
+SHOT /home/kush/projects/vm_failure/evidence/01c-dashboard-endpoint.png 2026-10-16T15:02:05.723Z
+SHOT /home/kush/projects/vm_failure/evidence/01d-dashboard-instances-healthy.png 2026-10-16T15:02:06.726Z
+DUMP /home/kush/projects/vm_failure/evidence/raw/dashboard-dump-2026-10-16T15-02-07-636Z.txt
+SHOT /home/kush/projects/vm_failure/evidence/01d-dashboard-instances-healthy.png 2026-10-16T15:02:26.986Z
+SHOT /home/kush/projects/vm_failure/evidence/06a-dashboard-before-termination.png 2026-10-16T15:03:28.800Z
+SHOT /home/kush/projects/vm_failure/evidence/07-failure-observed.png 2026-10-16T15:04:07.208Z
+SHOT /home/kush/projects/vm_failure/evidence/09-autoscaling-replacement.png 2026-10-16T15:04:16.242Z
+SHOT /home/kush/projects/vm_failure/evidence/10b-dashboard-replacement-health-check.png 2026-10-16T15:04:24.014Z
+SHOT /home/kush/projects/vm_failure/evidence/08-application-after-failure.png 2026-10-16T15:04:31.193Z
+SHOT /home/kush/projects/vm_failure/evidence/12-dashboard-recovered.png 2026-10-16T15:07:06.409Z
+SHOT /home/kush/projects/vm_failure/evidence/12b-dashboard-run-result.png 2026-10-16T15:07:07.998Z
+SHOT /home/kush/projects/vm_failure/evidence/12c-dashboard-timeline.png 2026-10-16T15:07:09.290Z
+DUMP /home/kush/projects/vm_failure/evidence/raw/dashboard-dump-2026-10-16T15-07-14-700Z.txt
+SHOT /home/kush/projects/vm_failure/evidence/12d-dashboard-final.png 2026-10-16T15:07:49.126Z
+DUMP /home/kush/projects/vm_failure/evidence/raw/dashboard-dump-2026-10-16T15-07-50-931Z.txt

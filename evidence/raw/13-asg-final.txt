@@ -1,0 +1,21 @@
+# captured 2026-10-16T15:07:11Z (20:37:11 IST)
+$ aws autoscaling describe-auto-scaling-groups --auto-scaling-group-names vmfail-asg --query AutoScalingGroups[0].{Desired:DesiredCapacity,Min:MinSize,Max:MaxSize,Instances:Instances[].[InstanceId,AvailabilityZone,LifecycleState,HealthStatus]} --output json
+{
+    "Desired": 2,
+    "Min": 2,
+    "Max": 3,
+    "Instances": [
+        [
+            "i-0247b25cc8d418e9c",
+            "ap-south-1b",
+            "InService",
+            "Healthy"
+        ],
+        [
+            "i-0c94b00e34dcc54be",
+            "ap-south-1a",
+            "InService",
+            "Healthy"
+        ]
+    ]
+}

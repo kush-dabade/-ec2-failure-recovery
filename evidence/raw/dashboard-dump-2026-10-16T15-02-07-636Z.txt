@@ -1,0 +1,54 @@
+OVERALL: HEALTHY
+KPIs: HTTP availability (this run) 100.0% 51 ok · 0 failed of 51 requests | Healthy targets / desired capacity 2 / 2 | ASG instances InService 2 / 2 min 2 · max 3 · health check: ELB | Serving instances (last 10 s) 2 EC2-1, EC2-2
+
+=== RUN RESULT ===
+(none)
+
+=== INSTANCES ===
+EC2-1
+HEALTHY
+i-0d39d030fa44d115a
+Serving traffic
+Availability Zone
+ap-south-1a
+EC2 state
+running
+ASG lifecycle
+InService
+Target health
+healthy
+Launched
+14:58:01
+Private IP
+172.31.38.168
+Requests served this run
+31 · 61%
+EC2-2
+HEALTHY
+i-0247b25cc8d418e9c
+Serving traffic
+Availability Zone
+ap-south-1b
+EC2 state
+running
+ASG lifecycle
+InService
+Target health
+healthy
+Launched
+14:58:01
+Private IP
+172.31.4.15
+Requests served this run
+20 · 39%
+
+=== TIMELINE (newest first) ===
+15:01:32
+Dashboard
+Normal operation started: sending real requests through the load balancer
+15:01:31
+AWS observed
+All 2 instances healthy in the target group (desired capacity 2)
+15:01:31
+Dashboard
+Dashboard connected to AWS state. Baseline: EC2-1 = i-0d39d030fa44d115a (ap-south-1a), EC2-2 = i-0247b25cc8d418e9c (ap-south-1b)

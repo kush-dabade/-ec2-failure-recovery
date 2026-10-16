@@ -1,0 +1,14 @@
+# captured 2026-10-16T15:07:33Z (20:37:33 IST)
+$ bash -c for i in $(seq 1 12); do curl -s -m 5 -o /tmp/vmw.json -w "%{http_code} " http://vmfail-alb-1890781929.ap-south-1.elb.amazonaws.com/api/whoami; python3 -c "import json; d=json.load(open(\"/tmp/vmw.json\")); print(d[\"served_at\"], d[\"instance_id\"], d[\"availability_zone\"], d[\"hostname\"])"; sleep 0.3; done
+200 2026-10-16T15:07:34.080650Z i-0c94b00e34dcc54be ap-south-1a ip-172-31-39-224.ap-south-1.compute.internal
+200 2026-10-16T15:07:34.446537Z i-0c94b00e34dcc54be ap-south-1a ip-172-31-39-224.ap-south-1.compute.internal
+200 2026-10-16T15:07:34.818651Z i-0c94b00e34dcc54be ap-south-1a ip-172-31-39-224.ap-south-1.compute.internal
+200 2026-10-16T15:07:35.198325Z i-0247b25cc8d418e9c ap-south-1b ip-172-31-4-15.ap-south-1.compute.internal
+200 2026-10-16T15:07:35.572003Z i-0c94b00e34dcc54be ap-south-1a ip-172-31-39-224.ap-south-1.compute.internal
+200 2026-10-16T15:07:35.943497Z i-0c94b00e34dcc54be ap-south-1a ip-172-31-39-224.ap-south-1.compute.internal
+200 2026-10-16T15:07:36.322041Z i-0247b25cc8d418e9c ap-south-1b ip-172-31-4-15.ap-south-1.compute.internal
+200 2026-10-16T15:07:36.714221Z i-0c94b00e34dcc54be ap-south-1a ip-172-31-39-224.ap-south-1.compute.internal
+200 2026-10-16T15:07:37.093252Z i-0247b25cc8d418e9c ap-south-1b ip-172-31-4-15.ap-south-1.compute.internal
+200 2026-10-16T15:07:37.472153Z i-0247b25cc8d418e9c ap-south-1b ip-172-31-4-15.ap-south-1.compute.internal
+200 2026-10-16T15:07:37.847631Z i-0247b25cc8d418e9c ap-south-1b ip-172-31-4-15.ap-south-1.compute.internal
+200 2026-10-16T15:07:38.258131Z i-0c94b00e34dcc54be ap-south-1a ip-172-31-39-224.ap-south-1.compute.internal

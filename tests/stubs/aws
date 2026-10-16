@@ -1,0 +1,70 @@
+#!/usr/bin/env python3
+"""TEST STUB for scripts/fail-instance.sh: answers the exact AWS CLI queries the
+script makes from a scenario file, and records terminate calls instead of acting."""
+import json, os, re, sys
+
+args = sys.argv[1:]
+cmd = " ".join(args)
+sc_path = os.environ["STUB_SCENARIO"]
+sc = json.load(open(sc_path))
+sc["calls"] = sc.get("calls", 0) + 1
+
+def opt(name):
+    return args[args.index(name) + 1] if name in args else ""
+
+q = opt("--query")
+inst = sc["instances"]  # id -> {"lc": ..., "target": ..., "az": ..., "asg_tag": ...}
+
+def save():
+    json.dump(sc, open(sc_path, "w"))
+
+def target_state(i):
+    return inst.get(i, {}).get("target") or "None"
+
+out = ""
+if args[:2] == ["sts", "get-caller-identity"]:
+    out = "851226124537"
+elif args[:2] == ["autoscaling", "describe-auto-scaling-groups"]:
+    if "Key=='Project'" in q:
+        out = sc.get("asg_project", "vm-failure-demo")
+    elif "Instances[].[InstanceId" in q:
+        out = "\n".join(f"{i}\t{v['az']}\t{v['lc']}\tHealthy" for i, v in inst.items() if v.get("lc"))
+    elif "LifecycleState | [0]" in q:
+        i = re.search(r"InstanceId=='([^']+)'", q).group(1)
+        out = inst.get(i, {}).get("lc") or "None"
+    elif "DesiredCapacity" in q:
+        out = "2"
+    else:
+        out = "0"
+elif args[:2] == ["elbv2", "describe-target-groups"]:
+    out = "arn:stub:tg"
+elif args[:2] == ["elbv2", "describe-target-health"]:
+    if "--targets" in args:
+        i = re.search(r"Id=([^,]+)", opt("--targets")).group(1)
+        out = target_state(i)
+    elif "Target.Id!=" in q:
+        sc["others_checks"] = sc.get("others_checks", 0) + 1
+        if sc.get("flip_on_others_check") == sc["others_checks"]:
+            for v in inst.values():
+                v["target"] = "unhealthy"
+        x = re.search(r"Target.Id!='([^']+)'", q).group(1)
+        out = str(sum(1 for i, v in inst.items() if i != x and v.get("target") == "healthy"))
+    else:
+        out = str(sum(1 for v in inst.values() if v.get("target") == "healthy"))
+elif args[:2] == ["ec2", "describe-instances"]:
+    i = opt("--instance-ids")
+    if "groupName" in q:
+        out = inst.get(i, {}).get("asg_tag", "vmfail-asg")
+    elif "AvailabilityZone" in q:
+        out = inst.get(i, {}).get("az", "None")
+    else:
+        out = "shutting-down"
+elif args[:2] in (["autoscaling", "terminate-instance-in-auto-scaling-group"], ["ec2", "terminate-instances"]):
+    sc.setdefault("terminated", []).append(opt("--instance-id") or opt("--instance-ids"))
+    out = "stub-terminate-recorded"
+else:
+    print(f"STUB: unhandled aws {cmd}", file=sys.stderr)
+    save()
+    sys.exit(2)
+save()
+print(out)
